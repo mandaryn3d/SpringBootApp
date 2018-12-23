@@ -1,91 +1,60 @@
 package pl.umcs.services;
 
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.umcs.datatypes.Card;
-import pl.umcs.datatypes.Collection;
+import pl.umcs.repositories.CardRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CardService {
     private static final Logger log = LoggerFactory.getLogger(CardService.class);
 
-    private CollectionService collectionService;
+    private CardRepository cardRepository;
 
     @Autowired
-    public CardService(CollectionService collectionService) {
-        this.collectionService = collectionService;
+    public CardService(CardRepository cardRepository) {
+        this.cardRepository = cardRepository;
     }
 
-    public Card save(Long idToAdd, Card card) {
-        Collection collection = collectionService.find(idToAdd);
-        if (null != collection) {
-            collection.getCardList().add(card);
-        }
 
-        log.info("Successfull card: " + card.getName() + " added to collection: " + collection.getId());
-        return card;
+
+
+    public Card save(Card card) {
+        Card savedCard = cardRepository.save(card);
+        log.info("Successfull card: " + card);
+        return savedCard;
     }
 
-    public List<Card> findAll(Long id) {
-        Collection collection = collectionService.find(id);
-        List<Card> cardList = null;
-        if (null != collection) {
-            cardList = collection.getCardList();
-        }
+    public List<Card> findAll() {
+        Iterable<Card> cardIterable = cardRepository.findAll();
+        List<Card> cards = Lists.newArrayList(cardIterable);
 
-        log.info("Returning all cards for collection: " +  id);
-        return cardList;
+        log.info("Returning all cards");
+        return cards;
     }
 
-    public Card find(Long collectionId, Long cardId) {
-        Collection collection = collectionService.find(collectionId);
-        Card foundCard = null;
-        if(null != collection) {
-            for (Card card : collection.getCardList()) {
-                if (cardId == card.getId()) {
-                    foundCard = card;
-                    break;
-                }
-            }
-        }
-
-        log.info("Returning card: " + cardId + " from collection: " + collectionId);
-        return foundCard;
+    public Card find(Long id) {
+        Optional<Card> collection = cardRepository.findById(id);
+        log.info("Returning collection: " + id);
+        return collection.orElse(null);
     }
 
-    public Card update(Long id, Card card) {
-        Collection collection = collectionService.find(id);
-        Card foundCard = null;
-        if (null != collection) {
-            for (Card itr : collection.getCardList()) {
-                if (card.getId() == itr.getId()) {
-                    itr = card;
-                    foundCard = itr;
-                    break;
-                }
-            }
-        }
+    public Card update(Card card) {
+        Card updatedCard = cardRepository.save(card);
+        log.info("Successfull card Update: " + updatedCard.getId());
 
-        log.info("Successfull card Update: " + card.getId() + " for collection: " + id);
-        return foundCard;
+        return updatedCard;
     }
 
-    public void deleteCard(Long collectionId, Long cardId) {
-        Collection collection = collectionService.find(collectionId);
-        Card foundCard = null;
-        if (null != collection) {
-            for (Card card : collection.getCardList()) {
-                if (cardId == card.getId()) {
-                    collection.getCardList().remove(card);
-                    break;
-                }
-            }
-        }
+    public void deleteCard(Long id) {
+        cardRepository.deleteById(id);
 
-        log.info("Deleting card: " + cardId + " from collection: " + collectionId);
+        log.info("Successfull card Delete: " +  id);
     }
 }

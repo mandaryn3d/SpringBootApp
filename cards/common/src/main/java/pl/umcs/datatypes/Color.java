@@ -8,3 +8,4 @@ public enum Color {
     Black,
     Colorless
 }
+

@@ -1,1 +1,0 @@
-Projekt zaliczeniowy z Integracji aplikacji

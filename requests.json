@@ -1,0 +1,16 @@
+{
+	"name": "Lightning Bolt",
+	"cost": "R",
+	"color": "Red"
+}
+{
+	"name": "Mana Leak",
+	"cost": "1U",
+	"color": "Blue"
+}
+{
+	"name": "Sol Ring",
+	"cost": "1",
+	"color": "Colorless"
+}
+

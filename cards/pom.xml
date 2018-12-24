@@ -12,6 +12,8 @@
         <module>eurekaServer</module>
         <module>collection</module>
         <module>common</module>
+        <module>creator</module>
+        <module>searcher</module>
     </modules>
     
     <properties>

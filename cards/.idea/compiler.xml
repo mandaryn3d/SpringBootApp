@@ -8,7 +8,9 @@
         <outputRelativeToContentRoot value="true" />
         <module name="collection" />
         <module name="common" />
+        <module name="creator" />
         <module name="eurekaServer" />
+        <module name="searcher" />
       </profile>
     </annotationProcessing>
   </component>
@@ -16,7 +18,9 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="collection" options="-parameters" />
       <module name="common" options="-parameters" />
+      <module name="creator" options="-parameters" />
       <module name="eurekaServer" options="-parameters" />
+      <module name="searcher" options="-parameters" />
     </option>
   </component>
 </project>

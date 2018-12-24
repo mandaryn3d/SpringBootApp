@@ -15,6 +15,7 @@ public class Card {
     private String cost;
     @Enumerated(EnumType.STRING)
     private Color color;
+    private Integer cmc;
 
 
     public Card() {
@@ -48,6 +49,21 @@ public class Card {
         this.color = color;
     }
 
+    public Integer getCmc() {
+        return cmc;
+    }
+
+    public void setCmc(Integer cmc) {
+        this.cmc = cmc;
+    }
+
+    public Card(String name, String cost, Color color, Integer cmc) {
+        this.name = name;
+        this.cost = cost;
+        this.color = color;
+        this.cmc = cmc;
+    }
+
     @Override
     public String toString() {
         return "Card{" +
@@ -55,6 +71,7 @@ public class Card {
                 ", name='" + name + '\'' +
                 ", cost='" + cost + '\'' +
                 ", color=" + color +
+                ", cmc=" + cmc +
                 '}';
     }
 }

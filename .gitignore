@@ -21,3 +21,9 @@ $RECYCLE.BIN/
 # =========================
 # Operating System Files
 # =========================
+
+cards/collection/target/*
+cards/common/target/*
+cards/creator/target/*
+cards/eurekaServer/target/*
+cards/searcher/target/*

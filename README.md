@@ -25,3 +25,13 @@ POST
 	"cost": "1",
 	"color": "Colorless"
 }
+
+Searcher:
+localhost:8120/search/
+{
+    "name": "Eureka"
+}
+{
+    "cmc": "4",
+    "color": "Blue"
+}

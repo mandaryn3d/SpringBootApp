@@ -48,7 +48,7 @@ public class CardController {
 
     @GetMapping("/{cardId}")
     public Card find(@PathVariable Long cardId) {
-        log.info("Searching for card: + " + cardId);
+        log.info("Searching for card: " + cardId);
         return cardService.find(cardId);
     }
 

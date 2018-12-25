@@ -3,9 +3,14 @@ package pl.umcs;
 
 import com.google.common.collect.Lists;
 import com.netflix.appinfo.InstanceInfo;
+import com.netflix.discovery.EurekaClient;
 import com.netflix.discovery.shared.Application;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import pl.umcs.datatypes.Card;
 import pl.umcs.datatypes.Color;
@@ -13,22 +18,30 @@ import pl.umcs.datatypes.Color;
 
 import java.util.List;
 
+@Component
 public class CardCreator {
 
     private static final Logger log = LoggerFactory.getLogger(CardCreator.class);
     private RestTemplate restTemplate;
+    @Autowired
+    private EurekaClient eurekaClient;
 
     public CardCreator() {
         this.restTemplate = new RestTemplate();
     }
 
-    public String sendList() {
+
+    @EventListener(ApplicationReadyEvent.class)
+    public void sendList() {
+        Application collectionApplication
+                = eurekaClient.getApplication("collection");
+        String url = getUrl(collectionApplication, "/cards");
         List<Card> cardList = createList();
         for( Card card: cardList) {
-            restTemplate.postForEntity("http://localhost:8110/cards", card, Card.class);
+            restTemplate.postForEntity(url, card, Card.class);
             log.info("Sent: {}", card);
         }
-        return "Created some cards!";
+        log.info("Finished sending cards");
     }
 
 
@@ -64,4 +77,11 @@ public class CardCreator {
         return cardList;
     }
 
+    private String getUrl(Application application, String path) {
+        List<InstanceInfo> instances = application.getInstances();
+        InstanceInfo instanceInfo = instances.iterator().next();
+        String hostname = instanceInfo.getHostName();
+        int port = instanceInfo.getPort();
+        return "http://"+hostname+":"+port+path;
+    }
 }

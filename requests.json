@@ -19,3 +19,10 @@
 	"cmc": 4,
 	"color": "Blue"
 }
+
+
+
+curl --header "Content-Type: application/json" \
+  --request POST \
+  --data '{"cmc": 4,"color": "Blue"}' \
+  http://localhost:8120/search
